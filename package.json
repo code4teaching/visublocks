@@ -4,11 +4,18 @@
   "description": "Gemeinsame Block-Bibliothek der VisuCode-Projekte: kinderfreundliche Blöcke, aus denen Java-Code entsteht.",
   "license": "MIT",
   "author": "Christian Klein, Holger Sebastiao",
+  "homepage": "https://github.com/code4teaching/visublocks",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code4teaching/visublocks.git"
+  },
   "type": "module",
   "exports": {
     ".": "./src/index.ts"
   },
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "scripts": {
     "test": "vitest run",
     "check": "tsc --noEmit"
