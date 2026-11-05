@@ -26,11 +26,13 @@ Reihenfolge wie bei Scratch, mit eigenen Namen: Bewegung, Aussehen, Ton, Ereigni
 
 ## Einbinden
 
-In `package.json` des Projekts (feste Version über ein Git-Tag):
+In `package.json` des Projekts, mit fester Version (Commit oder, sobald es Releases gibt, ein Tag wie `v0.1.0`):
 
 ```json
-"dependencies": { "visublocks": "github:code4teaching/visublocks#v0.1.0" }
+"dependencies": { "visublocks": "github:code4teaching/visublocks#<commit>" }
 ```
+
+Neue Version holen: Commit in `package.json` ändern und `npm install`.
 
 ```ts
 import { readCountLoop, countLoopLines } from 'visublocks'
