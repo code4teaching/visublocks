@@ -18,6 +18,8 @@ Die Dateien kennen kein DOM und kein Struktogramm. Zeichnen und Ziehen bleibt in
 
 Reihenfolge wie bei Scratch, mit eigenen Namen: Bewegung, Aussehen, Ton, Ereignisse, Steuerung, Sensoren, Operatoren, Variablen, Eigene Blöcke.
 
+`src/categories.ts`: Kennungen und Reihenfolge (`categories`, `categoryRank`), Namen auf Deutsch, Englisch und Portugiesisch (`categoryName`) und welche Bauteile wohin gehören (`partCategory('Servo')` → `motion`). Farben legt jedes Projekt selbst fest.
+
 ## Bausteine
 
 | Datei | Block | Java |

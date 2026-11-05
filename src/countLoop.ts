@@ -15,7 +15,7 @@ export interface CountLoop {
   /** Startwert, ganze Zahl */
   start: string
   op: CountOp
-  /** Ende: ganze Zahl oder Sensor (`mbot.getDistance()`) */
+  /** Ende: ganze Zahl, Sensor (`mbot.getDistance()`) oder Variable (`anzahl`) */
   end: string
   /** Schrittweite, immer positiv; die Richtung steckt in `op` */
   step: string
@@ -44,7 +44,7 @@ export function readCountLoop(lines: string[], v = 'i'): CountLoop | undefined {
   const [init, cond, step] = parts
   const i = init.match(new RegExp(`^(?:int\\s+)?(${name})\\s*=\\s*(${int})$`))
   if (!i) return undefined
-  const c = cond.match(new RegExp(`^(${name})\\s*(<=|>=|<|>)\\s*(${int}|mbot\\.\\w+\\(\\))$`))
+  const c = cond.match(new RegExp(`^(${name})\\s*(<=|>=|<|>)\\s*(${int}|mbot\\.\\w+\\(\\)|${name})$`))
   if (!c || c[1] !== i[1]) return undefined
   const op = c[2] as CountOp
   const up = op === '<' || op === '<='
@@ -71,7 +71,7 @@ export function countLoopLines(c: CountLoop): string[] {
 
 /**
  * Feld Nummer `index` (0 Start, 1 Ende, 2 Schritt) auf `text` setzen. Start und Ende sind ganze Zahlen
- * (das Ende auch ein Sensor), der Schritt eine positive ganze Zahl; sonst `undefined`.
+ * (das Ende auch ein Sensor oder eine Variable), der Schritt eine positive ganze Zahl; sonst `undefined`.
  */
 export function setCountField(c: CountLoop, index: number, text: string): CountLoop | undefined {
   const t = text.trim()
@@ -79,10 +79,19 @@ export function setCountField(c: CountLoop, index: number, text: string): CountL
     case 'start':
       return new RegExp(`^${int}$`).test(t) ? { ...c, start: String(Number(t)) } : undefined
     case 'end':
-      if (/^mbot\.\w+\(\)$/.test(t)) return { ...c, end: t }
+      if (/^mbot\.\w+\(\)$/.test(t) || (new RegExp(`^${name}$`).test(t) && t !== c.v)) return { ...c, end: t }
       return new RegExp(`^${int}$`).test(t) ? { ...c, end: String(Number(t)) } : undefined
     case 'step':
       return /^\d+$/.test(t) && Number(t) > 0 ? { ...c, step: String(Number(t)) } : undefined
   }
   return undefined
 }
+
+/**
+ * „wiederhole [10]-mal“: Zählschleife von 0 bis unter N in Schritten von 1, deren Variable im Rumpf
+ * nicht vorkommt (das prüft das Projekt mit `usesVariable`). Das Feld ist das Ende (Index 1).
+ */
+export const isRepeatLoop = (c: CountLoop): boolean => c.start === '0' && c.op === '<' && c.step === '1'
+
+/** Neue „wiederhole 10-mal“-Schleife */
+export const repeatLoopLines = (times = 10, v = 'i'): string[] => countLoopLines({ ...defaultCountLoop(v), end: String(times) })

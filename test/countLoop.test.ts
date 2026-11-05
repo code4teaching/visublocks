@@ -12,7 +12,8 @@ describe('VisuBlocks: Zählschleife', () => {
   })
 
   it('lässt kompliziertere Köpfe als Text', () => {
-    expect(readCountLoop(['int i = 0', 'i < anzahl', 'i++'])).toBeUndefined()
+    expect(readCountLoop(['int i = 0', 'i < anzahl', 'i++'])?.end).toBe('anzahl')
+    expect(readCountLoop(['int i = 0', 'i < anzahl * 2', 'i++'])).toBeUndefined()
     expect(readCountLoop(['int i = 0', 'j < 10', 'i++'])).toBeUndefined()
     expect(readCountLoop(['int i = 0', 'i < 10', 'i--'])).toBeUndefined()
     expect(readCountLoop(['int i = 0', 'i < 10', 'i *= 2'])).toBeUndefined()
@@ -26,6 +27,8 @@ describe('VisuBlocks: Zählschleife', () => {
     expect(setCountField(c, 0, '2.5')).toBeUndefined()
     expect(setCountField(c, 2, '0')).toBeUndefined()
     expect(setCountField(c, 1, 'mbot.getTimer()')?.end).toBe('mbot.getTimer()')
+    expect(setCountField(c, 1, 'zahl')?.end).toBe('zahl')
+    expect(setCountField(c, 1, 'i')).toBeUndefined()
     expect(countVar(1)).toBe('j')
   })
 })
