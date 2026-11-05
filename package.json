@@ -1,0 +1,20 @@
+{
+  "name": "visublocks",
+  "version": "0.1.0",
+  "description": "Gemeinsame Block-Bibliothek der VisuCode-Projekte: kinderfreundliche Blöcke, aus denen Java-Code entsteht.",
+  "license": "MIT",
+  "author": "Christian Klein, Holger Sebastiao",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": ["src"],
+  "scripts": {
+    "test": "vitest run",
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  }
+}
