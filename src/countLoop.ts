@@ -86,3 +86,12 @@ export function setCountField(c: CountLoop, index: number, text: string): CountL
   }
   return undefined
 }
+
+/**
+ * „wiederhole [10]-mal“: Zählschleife von 0 bis unter N in Schritten von 1, deren Variable im Rumpf
+ * nicht vorkommt (das prüft das Projekt mit `usesVariable`). Das Feld ist das Ende (Index 1).
+ */
+export const isRepeatLoop = (c: CountLoop): boolean => c.start === '0' && c.op === '<' && c.step === '1'
+
+/** Neue „wiederhole 10-mal“-Schleife */
+export const repeatLoopLines = (times = 10, v = 'i'): string[] => countLoopLines({ ...defaultCountLoop(v), end: String(times) })
